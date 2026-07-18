@@ -11,27 +11,40 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "FirstSwipe(R1)"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "DeCentroParaShootearPorTrench(R1)"
-          }
-        },
-        {
           "type": "wait",
           "data": {
             "waitTime": 0.2
           }
         },
         {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "FirstSwipe(R1)"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "TakeBalls"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "StopIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DeCentroParaShootearPorTrench(R1)"
           }
         },
         {

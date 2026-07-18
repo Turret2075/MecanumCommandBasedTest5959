@@ -53,11 +53,11 @@
       },
       "prevControl": {
         "x": 6.670011235955055,
-        "y": 1.354764044943821
+        "y": 1.3547640449438214
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "SwipeFirstStartR"
     }
   ],
   "rotationTargets": [
@@ -76,14 +76,14 @@
   "globalConstraints": {
     "maxVelocity": 3.35,
     "maxAcceleration": 2.0,
-    "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 720.0,
+    "maxAngularVelocity": 250.0,
+    "maxAngularAcceleration": 600.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 90.0
   },
   "reversed": false,
   "folder": null,

@@ -6,7 +6,11 @@ package frc.robot;
 
 
 import frc.robot.Constants.PuertoControl;
+import frc.robot.commands.AutoAim_HUB;
 import frc.robot.commands.DriveWithConstants;
+import frc.robot.commands.ReverseIntake;
+import frc.robot.commands.RunIntake;
+import frc.robot.commands.StopIntake;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 
@@ -37,30 +41,22 @@ public class RobotContainer {
     ));
 
     NamedCommands.registerCommand(
-      "Agarrar Pelotitas",
-      intake.runEnd(
-        intake::intakeWithValue,
-        intake::stopRollers
-      )
+      "TakeBalls", new RunIntake(intake).withTimeout(2)
     );
 
     NamedCommands.registerCommand(
-      "Escupir Pelotitas",
-      intake.runEnd(
-        intake::reverseWithValue,
-        intake::stopRollers
-      )
+      "UnjamIntake", new ReverseIntake(intake)
     );
 
     NamedCommands.registerCommand(
-      "Detener Intake",
-      intake.runOnce(
-        intake::stopRollers
-      )
+      "StopIntake", new StopIntake(intake).withTimeout(0.1)
     );
 
     autoChooserPathPlanner = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Autónomos PathPlanner", autoChooserPathPlanner);
+    SmartDashboard.putData("Autonomos PathPlanner", autoChooserPathPlanner);
+
+    SmartDashboard.putData("Chasis Mecanum", MecanumChassis);
+    SmartDashboard.putData("Control/ControlCero", ControlCero.getHID());
 
     configureBindings();
   }
@@ -84,16 +80,18 @@ public class RobotContainer {
     );
 
     ControlCero.x().whileTrue(
-      intake.runEnd(
-        intake::intakeWithValue,
-        intake::stopRollers
-      )
+      new RunIntake(intake)
     );
 
     ControlCero.b().whileTrue(
-      intake.runEnd(
-        intake::reverseWithValue,
-        intake::stopRollers)
+      new ReverseIntake(intake)
+    );
+
+    ControlCero.y().whileTrue(
+      new AutoAim_HUB(MecanumChassis,
+        () -> ControlCero.getLeftY(), 
+        () -> ControlCero.getLeftX()
+      )
     );
 
     ControlCero.back().onTrue(

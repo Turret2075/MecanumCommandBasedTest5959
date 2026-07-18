@@ -11,18 +11,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "FirstSwipe(R1)"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "DeCentroParaShootearPorBump(R1)"
-          }
-        },
-        {
           "type": "wait",
           "data": {
             "waitTime": 0.2
@@ -31,7 +19,25 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "TakeBalls"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "FirstSwipe(R1)"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "DeCentroParaShootearPorBump(R1)"
           }
         },
         {
@@ -50,12 +56,6 @@
           "type": "wait",
           "data": {
             "waitTime": 0.2
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PivotStageMax"
           }
         }
       ]

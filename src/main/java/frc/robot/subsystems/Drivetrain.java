@@ -8,7 +8,6 @@ package frc.robot.subsystems;
 import frc.robot.Constants.Mecanum;
 import frc.robot.Constants.PIDFFs;
 import frc.robot.Constants.PatherPID;
-import frc.robot.lib.BLine.FollowPath;
 import frc.robot.Constants.Encoders;
 
 import static edu.wpi.first.units.Units.Degrees;
@@ -218,10 +217,10 @@ public class Drivetrain extends SubsystemBase {
     }
 
     //Ubicacion llantas y giroscopio
-    Translation2d frontLeftLocation = new Translation2d(0.29, 0.29);
-    Translation2d frontRightLocation = new Translation2d(0.29, -0.29);
-    Translation2d rearLeftLocation = new Translation2d(-0.29, 0.29);
-    Translation2d rearRightLocation = new Translation2d(-0.29, -0.29);
+    Translation2d frontLeftLocation = new Translation2d(0.258, 0.288);
+    Translation2d frontRightLocation = new Translation2d(0.258, -0.288);
+    Translation2d rearLeftLocation = new Translation2d(-0.258, 0.288);
+    Translation2d rearRightLocation = new Translation2d(-0.258, -0.288);
 
     Pose2d initialPose = new Pose2d(0, 0, getHeading());
 
@@ -296,33 +295,6 @@ public class Drivetrain extends SubsystemBase {
     this // Reference to this subsystem to set requirements
   );
 
-
-  FollowPath.Builder pathBuilder = new FollowPath.Builder(
-    this,                     // Subsystem requirement
-    this::getPose2d,            // Supplier<Pose2d>
-    this::getChassisSpeeds,   // Supplier<ChassisSpeeds> (robot-relative)
-    this::driveWithSpeeds,              // Consumer<ChassisSpeeds>  (robot-relative)
-    new PIDController(
-      PatherPID.kP_PatherTrans,
-      PatherPID.kI_PatherTrans,
-      PatherPID.kD_PatherTrans
-     ),   // translation — minimizes remaining distance
-    new PIDController(
-      PatherPID.kP_PatherRot,
-      PatherPID.kI_PatherRot,
-      PatherPID.kD_PatherRot
-    ),   // rotation    — minimizes heading error
-    new PIDController(
-      2.5, 
-      3.5,
-      1.6
-    )    // cross-track — minimizes perpendicular deviation
-  )
-  .withDefaultShouldFlip()                // auto-flip when on the red alliance
-  .withPoseReset(this::resetOdometry); // reset odometry at each path's start pose
-
-
-
     SmartDashboard.putBoolean("FOD", fieldOriented);
     SmartDashboard.putData("Navx Angle", navx);
     SmartDashboard.putData("Field", cancha);
@@ -393,6 +365,12 @@ public class Drivetrain extends SubsystemBase {
     FrontRight.setVoltage(OutputFR);
     RearLeft.setVoltage(OutputRL);
     RearRight.setVoltage(OutputRR);
+
+    //Publicar velocidades meta a 
+    SmartDashboard.putNumber("ROD_TargetSpeeds/Meta_FL", MetaFL);
+    SmartDashboard.putNumber("ROD_TargetSpeeds/Meta_FR", MetaFR);
+    SmartDashboard.putNumber("ROD_TargetSpeeds/Meta_RL", MetaRL);
+    SmartDashboard.putNumber("ROD_TargetSpeeds/Meta_RR", MetaRR);
     }
   
 
@@ -425,7 +403,12 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void resetNavx() {
-    navx.reset();
+    if (RobotBase.isReal()){
+      navx.reset();
+    }
+    else{
+      gSimNavX.resetData();
+    }
   }
 
   public double getNavXDegrees(){
@@ -506,7 +489,30 @@ public class Drivetrain extends SubsystemBase {
     Waze.update(getHeading(), wheelPositions);
 
     //Proyectamos el robot en la cancha virtual de la UI
-    cancha.setRobotPose(xRC_Odometry.getPoseMeters());  }
+    cancha.setRobotPose(xRC_Odometry.getPoseMeters());  
+
+
+     //------------------------Publicar valores utiles------------------------------
+
+    //Pose XY del robot
+    SmartDashboard.putNumber("RobotPose/Pose X (m)", getPose2d().getX());
+    SmartDashboard.putNumber("RobotPose/Pose Y (m)", getPose2d().getY());
+
+    //Proyectar la cancha
+    SmartDashboard.putData("Cancha", cancha);
+
+    //--------------------------Telemetria teleop-------------------------------
+
+    //Angulo actual y meta
+    SmartDashboard.putNumber("AngulosChasis/Heading", getHeadingDegrees());
+    
+    //Velocidades Reales
+    SmartDashboard.putNumber("RealSpeeds/Real_FL", FrontLeftEncoder.getRate());
+    SmartDashboard.putNumber("RealSpeeds/Real_FR", FrontRightEncoder.getRate());
+    SmartDashboard.putNumber("RealSpeeds/Real_RL", RearLeftEncoder.getRate());
+    SmartDashboard.putNumber("RealSpeeds/Real_RR", RearRightEncoder.getRate());
+  }
+
 
   @Override
   public void simulationPeriodic() {

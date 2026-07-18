@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.607,
-        "y": 0.663
+        "x": 0.6074137931034489,
+        "y": 0.6630711206896558
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.5508513270563847,
-        "y": 1.7166261803088505
+        "x": 0.5512651201598336,
+        "y": 1.7166973009985063
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Outpost"
     },
     {
       "anchor": {
-        "x": 2.4,
-        "y": 2.547
+        "x": 2.399977528089887,
+        "y": 2.547112359550563
       },
       "prevControl": {
-        "x": 2.293373522480389,
-        "y": 2.31499098536102
+        "x": 2.2933510505702763,
+        "y": 2.315103344911583
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ShootR"
     }
   ],
   "rotationTargets": [],
@@ -35,8 +35,8 @@
   "globalConstraints": {
     "maxVelocity": 3.35,
     "maxAcceleration": 2.0,
-    "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 720.0,
+    "maxAngularVelocity": 250.0,
+    "maxAngularAcceleration": 600.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },

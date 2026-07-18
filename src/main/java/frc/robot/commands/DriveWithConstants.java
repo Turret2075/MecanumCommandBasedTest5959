@@ -16,6 +16,7 @@ import java.util.function.IntSupplier;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -28,6 +29,7 @@ public class DriveWithConstants extends Command {
   private final BooleanSupplier isSpeedReduced;
 
   private double xRC_SlowMode;
+  private double LastAngle;
 
   //Slews
   private final SlewRateLimiter SlewMOVE = new SlewRateLimiter(8);
@@ -135,6 +137,16 @@ public class DriveWithConstants extends Command {
     }
 
     chassis.driveWithSpeeds(mecanumSpeeds);
+
+    //Storage cruceta para gyro falso de dashboard
+    if (LockInPOV != -1){
+      LastAngle = LockInPOV;
+    }
+
+    //Angulo actual y meta
+    SmartDashboard.putNumber("AngulosChasis/AngleTarget", AngleTarget);
+    SmartDashboard.putNumber("AutoAim/Value", LastAngle);
+    SmartDashboard.putString("AutoAim/.type", "Gyro");
   }
 
   // Called once the command ends or is interrupted.
