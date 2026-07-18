@@ -7,12 +7,14 @@ package frc.robot;
 
 import frc.robot.Constants.PuertoControl;
 import frc.robot.commands.AutoAim_HUB;
+import frc.robot.commands.CorrectPoseWithVision;
 import frc.robot.commands.DriveWithConstants;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.StopIntake;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.PhotonVision;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -27,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public class RobotContainer {
   private final Drivetrain MecanumChassis = new Drivetrain();
   private final Intake intake = new Intake();
+  private final PhotonVision vision = new PhotonVision();
   private final SendableChooser<Command> autoChooserPathPlanner;
   private final CommandXboxController ControlCero =
       new CommandXboxController(PuertoControl.kDriverControllerPort);
@@ -38,6 +41,11 @@ public class RobotContainer {
       () -> ControlCero.getRightX(),
       () -> ControlCero.getHID().getPOV(),
       () -> ControlCero.rightBumper().getAsBoolean()
+    ));
+
+    vision.setDefaultCommand(new CorrectPoseWithVision(
+      vision,
+      MecanumChassis
     ));
 
     NamedCommands.registerCommand(

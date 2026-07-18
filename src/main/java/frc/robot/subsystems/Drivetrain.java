@@ -41,6 +41,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.simulation.AnalogGyroSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
@@ -252,7 +253,9 @@ public class Drivetrain extends SubsystemBase {
       xRC_Kinematics, 
       getHeading(), 
       initialWheelPositions, 
-      initialPose
+      initialPose,
+      VecBuilder.fill(0.1,0.25,0.01),
+      VecBuilder.fill(0.5,0.5,99.0)
     );
 
     navx.reset();
@@ -475,6 +478,10 @@ public class Drivetrain extends SubsystemBase {
     resetNavx();
     resetOdometry(new Pose2d(0,0, getHeading()));
     resetEncoders();
+  }
+   
+  public void addVisionMeasurement(Pose2d visionPose2d, double timestampSeconds) {
+      Waze.addVisionMeasurement(visionPose2d, timestampSeconds);
   }
 
 
